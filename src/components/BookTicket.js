@@ -168,7 +168,6 @@ const TicketForm =(props)=>{
     reservation.creditCard = creditCard;
     setOpen(false);
     // window.location = ('/confirm_reservation');
-    console.log(reservation);
   }
 
   const handleClose = () => {

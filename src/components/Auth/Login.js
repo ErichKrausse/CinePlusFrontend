@@ -15,32 +15,32 @@ import Box from '@material-ui/core/Box';
  class FormDialog extends React.Component {
   state = {
     open: true,
-    username:'',
+    email:'',
     password:''
   };
 
   handleClickOpen = () => {
     this.setState({ open: true });
-    this.props.history.push('/');
+    this.props.history.push('/home');
   };
 
   handleClose = () => {
     this.setState({ open: false});
-    this.props.history.push('/');
+    this.props.history.push('/home');
   }
   handleLogin=()=>{
     const auth = {
       ...this.state
     }
-    this.props.onAuth(auth.username,auth.password);
+    this.props.onAuth(auth.email,auth.password);
     this.setState({ open: false});
-    this.props.history.push('/');
+    this.props.history.push('/home');
   }
   handleSignup=()=>{
-    this.props.history.push('/signup');
+    this.props.history.push('/home/signup');
   }
   handleuserChange=(event)=>{
-    this.setState({username:event.target.value});
+    this.setState({email:event.target.value});
   }
   handlepassChange=(event)=>{
     this.setState({password:event.target.value});
@@ -76,7 +76,7 @@ import Box from '@material-ui/core/Box';
               autoFocus
               margin="dense"
               id="name"
-              label="Username"
+              label="Email"
               type="text"
               fullWidth
               onChange={this.handleuserChange}
@@ -122,7 +122,7 @@ const mapStateToProps =(state)=>{
 
 const mapDispatchToProps = dispatch =>{
   return {
-    onAuth:(username,password)=>dispatch(actions.authLogin(username,password))
+    onAuth:(email,password)=>dispatch(actions.authLogin(email,password))
   }
 }
 

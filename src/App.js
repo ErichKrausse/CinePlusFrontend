@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import { Component } from 'react';
 import * as actions from './store/actions/auth';
 import BookTicket from './components/BookTicket';
+import Account from './components/Account';
 
 class App extends Component{
   componentDidMount(){
@@ -23,17 +24,23 @@ class App extends Component{
   return (
     <Router>
     <div>
-      <Route  path="/rate/:id" render={({match})=>(<Rate id={match.params.id}/>)}/>
-      <Route  path="/book/movie/:id" render={({match})=>(<BookTicket id={match.params.id}/>)}/>    
-      <Route  path="/">
+      <Route  path="/home/rate/:id" render={({match})=>(<Rate id={match.params.id}/>)}/>
+      <Route  path="/home/book/movie/:id" render={({match})=>(<BookTicket id={match.params.id}/>)}/>  
+      <Route  path="/home">
       <AppBar />
       </Route>
-      <Route  path="/login">
+      <Route  exact path="/">
+      <AppBar />
+      </Route>
+      <Route  path="/home/login">
       <Login />
       </Route>
-      <Route  path="/signup">
+      <Route  path="/home/signup">
       <Signup />
-      </Route>       
+      </Route>
+      <Route  path="/account">
+      <Account />
+      </Route>        
     </div>
     </Router>
   );

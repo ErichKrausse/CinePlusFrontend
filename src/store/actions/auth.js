@@ -36,18 +36,19 @@ export const checkAuthTimeout = expirationTime =>{
         },expirationTime *1000)
     }
 }
-export const authLogin = (username,password) =>{
+export const authLogin = (email,password) =>{
     return dispatch => { 
         dispatch(authStart());
         axios.post('https://localhost:5001/api/account/login',{
-            Email:username,
+            Email:email,
             Password:password
         })
         .then(res => {
             const token = res.data.token
-            const expirationDate = new Date(new Date().getTime()+3600*1000);
+            const expirationDate = res.data.expiration
             localStorage.setItem('token',token);
             localStorage.setItem('expirationDate',expirationDate);
+            localStorage.setItem('user',email);
             dispatch(authSuccess(token));
             dispatch(checkAuthTimeout(3600));
         })
@@ -67,9 +68,12 @@ export const authSignup = (username,email,password1,password2) =>{
         })
         .then(res => {
             const token = res.data.token
-            const expirationDate = new Date(new Date().getTime()+3600*1000);
+            const expirationDate = res.data.expiration
+            
+            console.log(expirationDate)
             localStorage.setItem('token',token);
             localStorage.setItem('expirationDate',expirationDate);
+            localStorage.setItem('user',email);
             dispatch(authSuccess(token));
             dispatch(checkAuthTimeout(3600));
         })

@@ -11,11 +11,13 @@ import Box from '@material-ui/core/Box';
 export default function ActionAreaCard(props) {
   
   const ratehandler = ()=>{
-      window.location=('/rate/'+props.title);
+    
+      window.location=('/home/rate/'+props.title);
   }
   const bookingHandler=()=>{
-    window.location=('/book/movie/'+props.title);
+    window.location=('/home/book/movie/'+props.title);
   }
+  
   return (
     <Card >
       

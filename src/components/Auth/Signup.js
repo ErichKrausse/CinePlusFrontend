@@ -39,10 +39,10 @@ const validateUser =(user)=>{
 
   handleClose = () => {
     this.setState({ open: false});
-    this.props.history.push('/');
+    this.props.history.push('/home');
   };
   handleLogin = ()=>{
-    this.props.history.push('/login');
+    this.props.history.push('/home/login');
   }
   handleSignup=()=>{
     const auth = {
@@ -55,7 +55,7 @@ const validateUser =(user)=>{
       else{
         this.props.onAuth(auth.username,auth.email,auth.password1,auth.password2);
         this.setState({ open: false });
-        this.props.history.push('/');
+        this.props.history.push('/home');
       }
 
   }

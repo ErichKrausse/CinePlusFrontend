@@ -14,8 +14,7 @@ export default function FormDialog(props) {
   const handleClose = () => {
     window.location=('/')
   };
-  const handleRate=()=>{
-
+  const handleRate=()=>{      
       setOpen(false)
       window.location=('/')
   }

@@ -43,13 +43,14 @@ import TextField from '@material-ui/core/TextField';
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
-
+  const handleProfileOpen=()=>{
+    window.location=('/account');
+  }
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
   const handleTag = (event,values)=>{
-    console.log(values)
     const _movs = movies.map(m =>{
       if(m.props.title.toLowerCase().includes(values.toLowerCase()) || values===null)
       {
@@ -69,14 +70,13 @@ import TextField from '@material-ui/core/TextField';
     setMobileMoreAnchorEl(event.currentTarget);
   };
   const handleLoginClick = ()=>{
-    window.location=('/login');
+    window.location=('/home/login');
   }
     
   const toggleDrawer = (anchor, open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-
     setState({ ...state, [anchor]: open });
   };
   const menuId = 'primary-search-account-menu';
@@ -100,7 +100,7 @@ import TextField from '@material-ui/core/TextField';
         props.isAuthenticated ? 
           <div>
         
-        <MenuItem onClick={handleMenuClose}><Button >Profile</Button></MenuItem>
+        <MenuItem onClick={handleProfileOpen}><Button >Profile</Button></MenuItem>
         <MenuItem onClick={props.logout}><Button > Logout</Button></MenuItem>
         </div>
       : 
@@ -138,7 +138,7 @@ import TextField from '@material-ui/core/TextField';
       }
     </Menu>
   );
-  const handleGenre =(gnre)=>{
+  const handleGenre =(gnre,anchor)=>{
     const _movs = movies.map(m =>{
       if(m.props.genre.includes(gnre) ||gnre==='All')
       {
@@ -164,7 +164,7 @@ import TextField from '@material-ui/core/TextField';
       <Divider/>
       <List>
         {['All','Drama', 'Comedy', 'Action', 'Sport','Fantasy','Adventure','Thriller','Documentary'].map((text, index) => (
-          <ListItem button onClick={()=>handleGenre(text)} key={text} >
+          <ListItem button onClick={()=>handleGenre(text,anchor)} key={text} >
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -188,9 +188,9 @@ import TextField from '@material-ui/core/TextField';
     <div>
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar >
+        <Toolbar  >
           <IconButton 
-            onClick={toggleDrawer('left', true)}
+            onClick={toggleDrawer('left', !state['left'])}
             edge="start"
             color="inherit"
             aria-label="open drawer"
@@ -219,7 +219,6 @@ import TextField from '@material-ui/core/TextField';
               disablePortal
             id="combo-box-demo"
             options={movie_titles}
-            //onChange={handleTag}
             onInputChange={handleTag}
             sx={{ marginLeft:3,marginTop:1,marginBottom:1,width: '100%' ,position:'relative',
             backgroundColor: alpha('#FFFFFF', 0.15),maxWidth:250,
