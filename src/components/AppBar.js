@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { experimentalStyled as styled, alpha } from '@material-ui/core/styles';
+import { alpha } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
 import ImageList from '@material-ui/core/ImageList';
 import {movies} from '../data';
@@ -25,52 +24,14 @@ import Divider from '@material-ui/core/Divider';
 import Autocomplete from '@material-ui/core/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
  function PrimarySearchAppBar(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [state, setState] = React.useState({
     left: false,
   });
-  const [ inputValue, setInputValue ] = React.useState('');
   const [movs,setMovies] = React.useState([...movies]);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -87,7 +48,23 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
+  const handleTag = (event,values)=>{
+    console.log(values)
+    const _movs = movies.map(m =>{
+      if(m.props.title.toLowerCase().includes(values.toLowerCase()) || values===null)
+      {
+        return m
+      }
+      return null
+    });
+    movs.sort((a,b)=>{
+      if(b && a)
+          return  b.props.rating-a.props.rating;
+          return null;
+        })
+    setMovies(_movs);
+    
+  }
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -236,15 +213,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
           >
             CinePlus
           </Typography>
-          <Search>
-            <Autocomplete
+            <Autocomplete 
+            popupIcon={<SearchIcon></SearchIcon>}
+            filterSelectedOptions
               disablePortal
             id="combo-box-demo"
             options={movie_titles}
-          sx={{ width: 300 }}
-          renderInput={(params) => <TextField onKeyDown={handleKeyDown}{...params} label="Movie" />}
+            //onChange={handleTag}
+            onInputChange={handleTag}
+            sx={{ marginLeft:3,marginTop:1,marginBottom:1,width: '100%' ,position:'relative',
+            backgroundColor: alpha('#FFFFFF', 0.15),maxWidth:250,
+            borderRadius:'10px' }}
+            renderInput={(params) => <TextField sx={{background:'white',borderRadius:'10px'}} onKeyDown={handleKeyDown}{...params} placeholder="Movie" />}
          />
-           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton
@@ -275,7 +256,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
       {renderMenu}
     </Box>
     <ImageList  key='movie-list'children={movs} gap = {20}cols={4} />
-
     </div>
   );
     
